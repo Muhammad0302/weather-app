@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Box, Stack, Switch, Flex,  Icon,
-    Input,
-    FormControl,
-    FormLabel,
-    Button,
-    Radio,
-    useDisclosure,
+import { Text, Box, Stack, Flex,  Input,
+      FormControl,
+      FormLabel,
+      Button,
+      Radio,
     RadioGroup,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter } from '@chakra-ui/react';
+    } from '@chakra-ui/react';
 import {getCurrentWeather} from "../../api/weather"
 
 const Home = () => {
  
-  const [isFahrenheit, setIsFahrenheit] = useState(false);
   const [weatherData, setWeatherData] = useState({});
   const [city, setCity] = useState('');
   const [tempratureType, setTempratureType] = useState('Fahrenheit')
@@ -45,11 +36,6 @@ const Home = () => {
       }
   };
 
-
-  const handleToggle = () => {
-    setIsFahrenheit(prev => !prev);
-  };
-
   const handleChange = event => {
     setCity(event.target.value);
   };
@@ -66,9 +52,6 @@ const Home = () => {
     return null;
   };
 
-
-  console.log(tempratureType)
-
   return (
     <Flex justify="center" alignItems="center" mt="100px" >
     <Box
@@ -80,31 +63,22 @@ const Home = () => {
     >
       <Stack spacing={4}>
         <Flex justify="space-between">
-          {/* <Text>Fahrenheit</Text>
-          <Switch onChange={handleToggle} isChecked={isFahrenheit} />
-          <Text>Celsius</Text>
-                */}
 
         <RadioGroup onChange={setTempratureType} value={tempratureType}>
         <Stack direction='row'>
-           <Radio value='Fahrenheit' colorScheme='green'>Fahrenheit</Radio>
-           <Radio value='Celsius' colorScheme='green'>Celsius</Radio>
+           <Radio value='Fahrenheit' colorScheme='green'  size='lg'> <Text fontWeight="bold">Fahrenheit</Text></Radio>
+           <Radio value='Celsius' colorScheme='green' size='lg'>  <Text fontWeight="bold">Celsius</Text></Radio>
         </Stack>
         </RadioGroup>               
 
-
-
-
         </Flex>
-
-
 
                <Box maxW="100%" borderWidth="1px" rounded="lg" pt={5} pl={5} pr={5} 
                pb={5}
                >
            
               <FormControl>
-                <FormLabel>Enter city name or zip code:</FormLabel>
+                <FormLabel fontWeight="bold">Enter city name or zip code:</FormLabel>
                 <Input
                   type="text"
                   value={city}
@@ -115,18 +89,16 @@ const Home = () => {
               <Button mt={4} variantColor="teal" type="button" onClick={fetchWeatherData}>
                 Get Weather
               </Button>
-          </Box>   
-       
-       
+          </Box>          
        
         {weatherData.main ? (
           <Stack textAlign="center" spacing={4}>
-            <Text>Temperature: {getTemperature().toFixed(2)}°</Text>
-            <Text>Humidity: {weatherData.main.humidity}%</Text>
-            <Text>Wind Speed: {weatherData.wind.speed} m/s</Text>
-            <Text>Description: {weatherData.weather[0].description}</Text>
+            <Text fontSize="xl" fontWeight="bold">Temperature: {getTemperature().toFixed(2)}°</Text>
+            <Text fontSize="xl" fontWeight="bold">Humidity: {weatherData.main.humidity}%</Text>
+            <Text fontSize="xl" fontWeight="bold">Wind Speed: {weatherData.wind.speed} m/s</Text>
+            <Text fontSize="xl" fontWeight="bold">Description: {weatherData.weather[0].description}</Text>
           </Stack>
-        ) :  city && weatherData.cod ==='404' ? <Text color="#ff0000">No data found for the enter city or zip code</Text> : null  }
+        ) :  city && weatherData.cod ==='404' ? <Text color="#ff0000" fontWeight="bold">No data found for the enter city or zip code</Text> : null  }
 
       </Stack>
     </Box>
