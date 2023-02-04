@@ -19,19 +19,28 @@ const Home = () => {
   const [isFahrenheit, setIsFahrenheit] = useState(false);
   const [weatherData, setWeatherData] = useState({});
   const [city, setCity] = useState('');
+   
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const res = await getCurrentWeather(city)
+//       console.log(res)
+//       const data = res.data;
+//       setWeatherData(data);
+//     };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await getCurrentWeather(city)
-      console.log(res)
-      const data = res.data;
-      setWeatherData(data);
-    };
+//     if (city) {
+//       fetchData();
+//     }
+//   }, [city]);
 
+
+  const fetchWeatherData = async () => {
     if (city) {
-      fetchData();
-    }
-  }, [city]);
+        const res = await getCurrentWeather(city)
+        setWeatherData(res.data);
+      }
+  };
+
 
   const handleToggle = () => {
     setIsFahrenheit(prev => !prev);
@@ -66,16 +75,10 @@ const Home = () => {
           <Switch onChange={handleToggle} isChecked={isFahrenheit} />
           <Text>Celsius</Text>
         </Flex>
-        <Text mb={4}>Enter city name or zip code:</Text>
-       
+               <Box maxW="100%" borderWidth="1px" rounded="lg" pt={5} pl={5} pr={5} 
+               pb={5}
+               >
            
-        <Box as="input" type="text" onChange={handleChange} />
-
-
-               <Box maxW="100%" borderWidth="1px" rounded="lg" p={5}>
-            <form 
-            // onSubmit={handleSubmit}
-            >
               <FormControl>
                 <FormLabel>Enter city name or zip code:</FormLabel>
                 <Input
@@ -85,10 +88,9 @@ const Home = () => {
                   placeholder="e.g Lahore"
                 />
               </FormControl>
-              <Button mt={4} variantColor="teal" type="submit">
+              <Button mt={4} variantColor="teal" type="button" onClick={fetchWeatherData}>
                 Get Weather
               </Button>
-            </form>
           </Box>   
        
        
@@ -100,7 +102,8 @@ const Home = () => {
             <Text>Wind Speed: {weatherData.wind.speed} m/s</Text>
             <Text>Description: {weatherData.weather[0].description}</Text>
           </Stack>
-        ) : null}
+        ) :  city && !weatherData ? <Text color="#ff0000">No data found for the enter city or zip code</Text> : null  }
+
       </Stack>
     </Box>
     </Flex>
