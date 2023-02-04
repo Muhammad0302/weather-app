@@ -4,7 +4,9 @@ import { Text, Box, Stack, Switch, Flex,  Icon,
     FormControl,
     FormLabel,
     Button,
+    Radio,
     useDisclosure,
+    RadioGroup,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -19,7 +21,10 @@ const Home = () => {
   const [isFahrenheit, setIsFahrenheit] = useState(false);
   const [weatherData, setWeatherData] = useState({});
   const [city, setCity] = useState('');
-   
+  const [tempratureType, setTempratureType] = useState('Fahrenheit')
+
+    //Code for live search input city  
+
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       const res = await getCurrentWeather(city)
@@ -27,7 +32,6 @@ const Home = () => {
 //       const data = res.data;
 //       setWeatherData(data);
 //     };
-
 //     if (city) {
 //       fetchData();
 //     }
@@ -50,15 +54,20 @@ const Home = () => {
     setCity(event.target.value);
   };
 
+  console.log(weatherData)
+
   const getTemperature = () => {
     if (weatherData?.main) {
-      return isFahrenheit
+      return tempratureType ==='Fahrenheit'
         ? ((weatherData.main.temp - 273.15) * 9) / 5 + 32
         : weatherData.main.temp - 273.15;
     }
 
     return null;
   };
+
+
+  console.log(tempratureType)
 
   return (
     <Flex justify="center" alignItems="center" mt="100px" >
@@ -71,10 +80,25 @@ const Home = () => {
     >
       <Stack spacing={4}>
         <Flex justify="space-between">
-          <Text>Fahrenheit</Text>
+          {/* <Text>Fahrenheit</Text>
           <Switch onChange={handleToggle} isChecked={isFahrenheit} />
           <Text>Celsius</Text>
+                */}
+
+        <RadioGroup onChange={setTempratureType} value={tempratureType}>
+        <Stack direction='row'>
+           <Radio value='Fahrenheit' colorScheme='green'>Fahrenheit</Radio>
+           <Radio value='Celsius' colorScheme='green'>Celsius</Radio>
+        </Stack>
+        </RadioGroup>               
+
+
+
+
         </Flex>
+
+
+
                <Box maxW="100%" borderWidth="1px" rounded="lg" pt={5} pl={5} pr={5} 
                pb={5}
                >
@@ -96,13 +120,13 @@ const Home = () => {
        
        
         {weatherData.main ? (
-          <Stack spacing={4}>
+          <Stack textAlign="center" spacing={4}>
             <Text>Temperature: {getTemperature().toFixed(2)}°</Text>
             <Text>Humidity: {weatherData.main.humidity}%</Text>
             <Text>Wind Speed: {weatherData.wind.speed} m/s</Text>
             <Text>Description: {weatherData.weather[0].description}</Text>
           </Stack>
-        ) :  city && !weatherData ? <Text color="#ff0000">No data found for the enter city or zip code</Text> : null  }
+        ) :  city && weatherData.cod ==='404' ? <Text color="#ff0000">No data found for the enter city or zip code</Text> : null  }
 
       </Stack>
     </Box>
